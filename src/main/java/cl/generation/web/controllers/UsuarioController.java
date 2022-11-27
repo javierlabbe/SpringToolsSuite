@@ -3,6 +3,8 @@ package cl.generation.web.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import cl.generation.web.models.Rol;
+
 @Controller //simepre va en los controladores //mas pensado para trabajo en el mismo sistema internamente
 @RequestMapping("/usuario") // a las rutas de abajo se les antepone usuario (ruta generica)
 public class UsuarioController { // controlador de usuario. No todos los objetos llevan controlador, solo aquellos en los que necesitemos hacer al menos 
@@ -25,6 +27,14 @@ public class UsuarioController { // controlador de usuario. No todos los objetos
 	@RequestMapping("/javier/labbe")
 	public String jlabbe() {
 		System.out.println("En el metodo de javier");
+		return "";
+	}
+	
+	@RequestMapping("/rol")
+	public String obtenerRol() {
+		Rol rol = new Rol();
+		rol.setNombre("hola");
+		rol.setDescripcion("hola");
 		return "";
 	}
 }

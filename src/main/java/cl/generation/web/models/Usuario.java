@@ -10,6 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -45,12 +48,22 @@ public class Usuario { // este objeto luego se transformara en entidad
 	//Relacion OnetoOne
 	@JsonIgnore //permite eliminar error de recursividad. para que usuario muestre auto
 	@OneToOne(mappedBy = "usuario",cascade = CascadeType.ALL,fetch = FetchType.LAZY) // el mapeo asigna la relacion 
-	private Auto auto;
-	
+	private Auto auto;																 //cascade es opcional
+																					 //FetchType 
 	//Relacion oneToMany
 	@JsonIgnore 
-	@OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL,fetch = FetchType.LAZY)  //mappedby > en la relacion onetomany con direcciones lo encontraran con el nombre usuario.
 	private List<Direccion> direcciones;
+	
+	//Relacion ManyToMany
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name="roles_usuarios", //nombre de la tabla relacional. el sistema creara la tabla relacional. 
+			joinColumns = @JoinColumn(name="usuario_id"), //estoy posicionado en rol, por eso es el primer id del join (buena practica)
+			inverseJoinColumns =  @JoinColumn(name="rol_id")
+			)
+	private List<Rol> roles;
 	
 	@Transient // va asignificar que la columna no sea considerada en la creacion de la tabla
 	private String password2; // para confirmar contraseña
@@ -135,6 +148,22 @@ public class Usuario { // este objeto luego se transformara en entidad
 
 	public void setAuto(Auto auto) {
 		this.auto = auto;
+	}
+
+	public List<Direccion> getDirecciones() {
+		return direcciones;
+	}
+
+	public void setDirecciones(List<Direccion> direcciones) {
+		this.direcciones = direcciones;
+	}
+
+	public List<Rol> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
 	}
 
 	public Date getUpdatedAt() {
