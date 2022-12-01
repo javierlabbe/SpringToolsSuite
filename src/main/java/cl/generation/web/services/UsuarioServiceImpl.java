@@ -94,7 +94,19 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	public Boolean ingresoUsuario(String email, String password) {
 		System.out.println(email+" "+password);
-		return null;
+		Usuario usuario = usuarioRepository.findByCorreo(email);
+		if (usuario != null) { //existe usuario
+			//comparar contraseñas
+			// return BCrypt.checkpw(password, usuario.getPassword()); forma corta para ahorrar el if
+			Boolean resultadoPwd = BCrypt.checkpw(password, usuario.getPassword()); //entrega true o false al comparar contraseña ingresada con la encriptada en BD
+			if (resultadoPwd) {
+				return true;
+			} else { //resultadoPwd == false; passwords distintas
+				return false;
+			}	
+		} else { //no existe
+			return false;
+		}
 	}
 
 }

@@ -15,11 +15,21 @@ import cl.generation.web.services.UsuarioServiceImpl;
 @RequestMapping("/registro")
 //http://localhost:8080/registro/
 public class RegistroController {
+	/*
+	 * http://localhost:8080/registro/usuario GET -> desplegar el jsp
+	 * http://localhost:8080/registro/usuario POST -> capturar los datos en el
+	 * controlador
+	 * 
+	 * http://localhost:8080/registro/login GET -> desplegar el login.jsp
+	 * http://localhost:8080/registro/login POST -> capturar los datos(email y
+	 * pasword) en el controlador
+	 */	
+	
 	@Autowired
 	UsuarioServiceImpl usuarioServiceImpl;
 	
 	//1. capturar la url 
-	@RequestMapping("/usuario")
+	@GetMapping("/usuario")
 	public String mostrarformulario() {
 		//y desplegar el jsp (controlador)
 		return "registro.jsp";
@@ -30,7 +40,7 @@ public class RegistroController {
 	
 	//http://localhost:8080/registro/formulario
 	//requestMapping permite peticiones get o post
-	@RequestMapping("/formulario")
+	@PostMapping("/usuario") //antes request con /formulario
 	//5. capturar los parametros @RequestParam
 	public String guardarFormulario(@RequestParam("nombre") String nombre,
 			@RequestParam("nick") String nick,
@@ -53,7 +63,7 @@ public class RegistroController {
 			Boolean resultado = usuarioServiceImpl.guardarUsuario(usuario);
 			
 			if (resultado) { //si es verdadero
-				return "index.jsp"; //enviar a una vista		
+				return "login.jsp"; //enviar a una vista		
 			} else {
 				model.addAttribute("msgError", "Email ya registrado");
 				return "registro.jsp";
@@ -78,10 +88,17 @@ public class RegistroController {
 	//con get podemos pasar parametros ocultos
 	@PostMapping("/login")
 	public String ingresoUsuario(@RequestParam("email") String email,
-			@RequestParam("pass") String pass) {
-		System.out.println(email+" "+pass);
+			@RequestParam("pass") String pass,
+			Model model) {
+		
 		//lamando al método
 		Boolean resultadoLogin = usuarioServiceImpl.ingresoUsuario(email, pass);
-		return "";
+		
+		if (resultadoLogin) { //si resultadoLogin == true, login correcto
+			return "redirect:/home"; //ir a una ruta interna http:localhost:8080/home
+		} else {
+			model.addAttribute("msgError", "Usuario o Contraseña incorrecto"); //no se puede entregar un mensaje muy descriptivo como "contraseña incorrecta" porque no es seguro.
+			return "login.jsp";			
+		}
 	}
 }
