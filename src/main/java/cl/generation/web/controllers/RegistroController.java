@@ -3,13 +3,13 @@ package cl.generation.web.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import cl.generation.web.models.Usuario;
 import cl.generation.web.services.UsuarioServiceImpl;
-
-
 
 @Controller
 @RequestMapping("/registro")
@@ -29,6 +29,7 @@ public class RegistroController {
 	//4. se captura la url,
 	
 	//http://localhost:8080/registro/formulario
+	//requestMapping permite peticiones get o post
 	@RequestMapping("/formulario")
 	//5. capturar los parametros @RequestParam
 	public String guardarFormulario(@RequestParam("nombre") String nombre,
@@ -36,10 +37,11 @@ public class RegistroController {
 			@RequestParam("correo") String correo,
 			@RequestParam("pass") String pass,
 			@RequestParam("pass2") String pass2,
-			Model model) { //permite enviar respuesta del backend al frontend
+			Model model) { //permite enviar respuesta del backend al frontend (usado con libreria C)
 		System.out.println(nombre+" "+correo+" "+pass+" "+pass2);
 		//instanciar objeto
 		
+		//equals es para comparar String; ==
 		if(pass.equals(pass2)) {
 			Usuario usuario = new Usuario();
 			usuario.setNombre(nombre);
@@ -64,8 +66,22 @@ public class RegistroController {
 		
 	}
 	
+	//desplegar jsp
+	//con getmapping podemos pasar parametros por url. 
+	//Peticion de ruta sin parametros (o con parametros por url)
+	@GetMapping("/login") 
+	public String login() {
+		return "login.jsp";
+	}
 	
-	
-	
-	
+	//capturar el email y password
+	//con get podemos pasar parametros ocultos
+	@PostMapping("/login")
+	public String ingresoUsuario(@RequestParam("email") String email,
+			@RequestParam("pass") String pass) {
+		System.out.println(email+" "+pass);
+		//lamando al método
+		Boolean resultadoLogin = usuarioServiceImpl.ingresoUsuario(email, pass);
+		return "";
+	}
 }

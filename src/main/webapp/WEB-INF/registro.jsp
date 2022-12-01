@@ -21,10 +21,10 @@
     <div class="container-fluid">
     	<h2>Formulario Registro</h2>
     	
-    	<c:if test="${msgError!=null}">
+    	<c:if test="${msgError!=null}"> <!-- es un if -->
     		<div class="alert alert-danger" role="alert">
-				<c:out value="${msgError}"></c:out>
-			</div>
+				<c:out value="${msgError}"></c:out> <!-- es como un syso -->
+			</div> <!-- para dar estilo -->
     	</c:if>
 	    
 	    <div class="card">
@@ -45,7 +45,7 @@
 		        <label for="pass2" class="form-label">Password2:</label>
 		        <input type="password" class="form-control" id="pass2" name="pass2" placeholder="Ingrese password2">
 		        <br>
-		        <input type="submit" class="btn btn-outline-primary btn-lg" value="Enviar">
+		        <input type="submit" class="btn btn-outline-primary btn-lg" value="Enviar"> <!-- botón submit -->
 		    </form>
 		  </div>
 		</div>

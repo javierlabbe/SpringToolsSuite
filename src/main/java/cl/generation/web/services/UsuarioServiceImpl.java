@@ -91,4 +91,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarioRepository.findAll();
 	}
 
+	@Override
+	public Boolean ingresoUsuario(String email, String password) {
+		System.out.println(email+" "+password);
+		return null;
+	}
+
 }
