@@ -9,4 +9,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{ //imple
 	//Aqui hacemos logica de manipulacion de datos  (CRUD+)				 // T objeto, ID tipo de PK
 	// Operaciones que nos permiten trabajar con la DATA
 	
+	//cuando se pone un findBy y luego el nombre del atributo, spring entiende que se pasara ese dato
+	Usuario findByCorreo(String correo);
+	Usuario findByNick(String nick);
 }

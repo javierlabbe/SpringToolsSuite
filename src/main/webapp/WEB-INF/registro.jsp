@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %> <!-- librería taglib C -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +17,16 @@
     <!-- get muestra los paerametros 
     post envia los parametros ocultos
     -->
+  
     <div class="container-fluid">
+    	<h2>Formulario Registro</h2>
+    	
+    	<c:if test="${msgError!=null}">
+    		<div class="alert alert-danger" role="alert">
+				<c:out value="${msgError}"></c:out>
+			</div>
+    	</c:if>
+	    
 	    <div class="card">
 		  <div class="card-body">
 		    <form action="/registro/formulario" method="post">
@@ -34,6 +44,7 @@
 		        <br>
 		        <label for="pass2" class="form-label">Password2:</label>
 		        <input type="password" class="form-control" id="pass2" name="pass2" placeholder="Ingrese password2">
+		        <br>
 		        <input type="submit" class="btn btn-outline-primary btn-lg" value="Enviar">
 		    </form>
 		  </div>
