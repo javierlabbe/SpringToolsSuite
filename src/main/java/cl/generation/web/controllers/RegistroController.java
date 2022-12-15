@@ -1,5 +1,7 @@
 package cl.generation.web.controllers;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -89,16 +91,33 @@ public class RegistroController {
 	@PostMapping("/login")
 	public String ingresoUsuario(@RequestParam("email") String email,
 			@RequestParam("pass") String pass,
-			Model model) {
+			Model model,
+			HttpSession session) { //variable para almacenar datos en browser
 		
 		//lamando al método
 		Boolean resultadoLogin = usuarioServiceImpl.ingresoUsuario(email, pass);
 		
 		if (resultadoLogin) { //si resultadoLogin == true, login correcto
+			
+			Usuario usuario = usuarioServiceImpl.obtenerUsuarioEmail(email);
+			//guardar informacion en session
+			session.setAttribute("usuarioId", usuario.getId());
+			session.setAttribute("usuarioEmail", email); //se le puede agregar el nombre que uno quiera
+			session.setAttribute("usuarioRol", usuario.getRoles());
+			session.setAttribute("usuarioNombre", usuario.getNombre());
+			
 			return "redirect:/home"; //ir a una ruta interna http:localhost:8080/home
 		} else {
 			model.addAttribute("msgError", "Usuario o Contraseña incorrecto"); //no se puede entregar un mensaje muy descriptivo como "contraseña incorrecta" porque no es seguro.
 			return "login.jsp";			
 		}
+	}
+	
+	@RequestMapping("/logout")
+	public String logout(HttpSession session) {
+		if (session.getAttribute("usuarioId")!=null) {
+			session.invalidate(); //el invalidate mata toda la session
+		}
+		return "redirect:/registro/login"; //redirect llama al controlador, no al jsp
 	}
 }

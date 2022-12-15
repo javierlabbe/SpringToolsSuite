@@ -7,6 +7,8 @@ import cl.generation.web.models.Auto;
 
 @Repository
 public interface AutoRepository extends JpaRepository<Auto, Long>{
+
+	Auto findByMarca(String marca);
 	
 }
 
